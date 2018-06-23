@@ -35,7 +35,6 @@ def index():
 def about():
     return render_template('about.html')
 
-
 # Articles
 @app.route('/articles')
 def articles():
@@ -54,7 +53,6 @@ def articles():
     # Close connection
     cur.close()
 
-
 #Single Article
 @app.route('/article/<string:id>/')
 def article(id):
@@ -62,7 +60,6 @@ def article(id):
     result = collection.find_one({'_id':ObjectId(id)})
 
     return render_template('article.html', article=result)
-
 
 # Register Form Class
 class RegisterForm(Form):
@@ -74,7 +71,6 @@ class RegisterForm(Form):
         validators.EqualTo('confirm', message='Passwords do not match')
     ])
     confirm = PasswordField('Confirm Password')
-
 
 # User Register
 @app.route('/register', methods=['GET', 'POST'])
@@ -102,7 +98,6 @@ def register():
 
         return redirect(url_for('login'))
     return render_template('register.html', form=form)
-
 
 # User login
 @app.route('/login', methods=['GET', 'POST'])
@@ -228,9 +223,6 @@ def edit_article(id):
 
         return redirect(url_for('dashboard'))
     return render_template('edit_article.html', form=form)
-
-
-
 
 # Delete Article
 @app.route('/delete_article/<string:id>', methods=['POST'])
