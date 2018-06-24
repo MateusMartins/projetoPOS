@@ -187,7 +187,7 @@ def add_article():
         body = form.body.data
 
         # Cria as informações que serão inseridas no mongoDB
-        post = {'title': title,'body': body , 'author': session['username'], 'create_date' : datetime.datetime.utcnow()}
+        post = {'title': title,'body': body , 'author': session['username'], 'create_date' : str(datetime.datetime.now().date())}
 
         # Faz a inserção no mongoDB
         collection.insert_one(post)
