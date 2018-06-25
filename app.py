@@ -1,4 +1,4 @@
-from flask import Flask, render_template, flash, redirect, url_for, session, request, logging
+from flask import Flask, render_template, flash, redirect, url_for, session, request, logging, session
 from flask_mysqldb import MySQL
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 from passlib.hash import sha256_crypt
@@ -8,7 +8,12 @@ from pymongo import MongoClient
 from bson.objectid import ObjectId
 import datetime
 
+SESSION_TYPE = 'memcache'
+
+
 app = Flask(__name__)
+app.secret_key = "super secret key"
+
 
 # Configuração do MySQL
 app.config['MYSQL_HOST'] = 'localhost'
@@ -50,7 +55,7 @@ def articles():
         msg = 'Nenhum artigo cadastrado'
         return render_template('articles.html', msg=msg)
 
-#Exibição de artigo
+# Exibição de artigo
 @app.route('/article/<string:id>/')
 def article(id):
     # Seleciona o artigo que foi clicado pelo ObjectId(id)
@@ -110,7 +115,7 @@ def login():
         # Procura o usuário no MySQL
         result = cur.execute("SELECT * FROM users WHERE username = %s", [username])
 
-        #Valida se encontrou o usuario no MySQL
+        # Valida se encontrou o usuario no MySQL
         if result > 0:
             data = cur.fetchone()
             #Pega a senha do usuário
@@ -234,5 +239,5 @@ def delete_article(id):
     return redirect(url_for('dashboard'))
 
 if __name__ == '__main__':
-    app.secret_key='secret123'
-    app.run(debug=True)
+    app.debug = True
+    app.run()
