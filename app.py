@@ -207,20 +207,26 @@ def add_article():
 @app.route('/edit_article/<string:id>', methods=['GET', 'POST'])
 @is_logged_in
 def edit_article(id):
-    # Faz o consulta no mongoDB pelo ObjectId
-    result = collection.find_one({'_id':ObjectId(id)})
+    
 
     # Carrega o formulário para a edição do artigo
     form = ArticleForm(request.form)
-    
+
+    # Faz o consulta no mongoDB pelo ObjectId
+    result = collection.find_one({'_id':ObjectId(id)})
+   
     # Carrega as informações do documento que está sendo alterado
     form.title.data = result['title']
+    print(form.title.data)
     form.body.data = result['body']
-
+    print(form.body.data)
+    
+    
     if request.method == 'POST' and form.validate():
         #Pega os valores da tela
         title = request.form['title']
         body = request.form['body']
+        
         # Efetua o update no mongoDB
         collection.update_one({'_id':ObjectId(id)}, {'$set': {'title':title,'body':body}})
 
